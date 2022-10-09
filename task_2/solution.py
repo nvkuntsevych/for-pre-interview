@@ -22,11 +22,13 @@ def close_connection(con: sq.Connection) -> None:
 
 def create_table(con: sq.Connection) -> None:
     """This function creates table into db"""
-    
-    cur = con.cursor()
-    query = """CREATE TABLE IF NOT EXISTS tasks(task_id INTEGER PRIMARY KEY,
-               task_name VARCHAR(50), task_isactive VARCHAR(1), task_closing_date DATE)"""
-    cur.execute(query)
+
+    flag = check_if_connection(con)
+    if flag:
+        cur = con.cursor()
+        query = """CREATE TABLE IF NOT EXISTS tasks(task_id INTEGER PRIMARY KEY,
+                   task_name VARCHAR(50), task_isactive VARCHAR(1), task_closing_date DATE)"""
+        cur.execute(query)
 
 
 
@@ -173,10 +175,13 @@ def main() -> None:
         elif command in commands_list:
             try:
                 con = create_connection(db=PATH_TO_DB)
+
+                create_table(con)
                 commands_list[command](con, *args_list)
-                close_connection(con)
             except BaseException as exc:
                 print(exc, file=sys.stderr)
+            finally:
+                close_connection(con)
         else:
             print("You entered the wrong command. Try again.")
     print("TODO app has been finished.")
@@ -192,7 +197,7 @@ help - display this information;
 add <your_task> - add new task 'your_task'. You can enter multiple tasks 
     separated by a comma;
 remove <task_id> - remove task with id 'task_id'. You can enter multiple
-    tasks id separated by a comma;
+    task ids separated by a comma;
 list - display active tasks;
 mark <task_id> - mark task with id 'task_id' as done;
 statistic - display the number of comleted tasks grouped by date;
