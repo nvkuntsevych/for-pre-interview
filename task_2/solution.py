@@ -140,8 +140,12 @@ def check_if_task_exist_and_isactive(con: sq.Connection, task_id: str) -> bool:
 
 def main():
     print("Hello! This is TODO app")
-    while True:        
-        command, *args_list = input("Select command: ").split(maxsplit=1)
+    while True:
+        entered_data = input("Select command: ")
+        if entered_data == "":
+            continue
+        
+        command, *args_list = entered_data.split(maxsplit=1)
         if args_list != []:
             args_list = [i.strip() for i in args_list[0].strip(",").split(",")]
 
