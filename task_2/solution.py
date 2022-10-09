@@ -60,6 +60,10 @@ def check_if_not_empty(tpl: tuple[str]) -> bool:
     return True
 
 
+def check_if_all_task_exist(con: sq.Connection, task_ids: tuple[str]) -> bool:
+    pass
+
+
 
 
 
