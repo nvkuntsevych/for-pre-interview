@@ -38,7 +38,10 @@ def add_task(con: sq.Connection, *task_names: tuple[str]) -> None:
 
 
 def remove_task(con: sq.Connection, *task_ids: tuple[str]) -> None:
-    pass
+    print("remove_task", task_ids)
+    flag = check_if_connection(con) and check_if_not_empty(task_ids) and check_if_all_tasks_exist(con, task_ids)
+    if flag:
+        print("good")
     
 
 
@@ -60,14 +63,16 @@ def check_if_not_empty(tpl: tuple[str]) -> bool:
     return True
 
 
-def check_if_all_tasks_exist(con: sq.Connection, *task_ids: tuple[str]) -> bool:
+def check_if_all_tasks_exist(con: sq.Connection, task_ids: tuple[str]) -> bool:
     print("check_if_all_task_exist")
     cur = con.cursor()
     for task_id in task_ids:
         cur.execute("SELECT COUNT(task_name) FROM tasks WHERE task_id == ?", (task_id, ))
         task_numbers = cur.fetchone()[0]
-        print("task_id:", task_id)
-        print("task_numbers:", task_numbers)
+        if task_numbers == 0:
+            raise ValueError("There is some wrong task_ids")
+            return False
+    return True
         
 
 
@@ -78,8 +83,8 @@ def main():
     con = create_connection(db=PATH_TO_DB)
 
     #add_task(con, "task1", "task2", "task3", "task4", "task5", "task6")
-    check_if_all_tasks_exist(con, 1, 2)
-    check_if_all_tasks_exist(con, 8, 3)
+    remove_task(con, 1, 2)
+    remove_task(con, 8, 3)
     close_connection(con)
 
 
