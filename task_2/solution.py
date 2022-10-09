@@ -93,8 +93,6 @@ def list_statistic(con: sq.Connection) -> None:
 
 
 
-
-
 def check_if_connection(con: sq.Connection) -> bool:
     print("check_if_connection")
     if type(con) != sq.Connection:
@@ -137,9 +135,8 @@ def check_if_task_exist_and_isactive(con: sq.Connection, task_id: str) -> bool:
 
 
 
-
 def main():
-    print("Hello! This is TODO app")
+    print("Hello! This is TODO app. Enter 'help' to get information about using this app.")
     while True:
         entered_data = input("Select command: ")
         if entered_data == "":
@@ -151,6 +148,8 @@ def main():
 
         if command == "exit":
             break
+        elif command == "help":
+            print(help_string)
         elif command in commands_list:
             try:
                 con = create_connection(db=PATH_TO_DB)
@@ -159,12 +158,26 @@ def main():
             except BaseException as exc:
                 print(exc, file=sys.stderr)
         else:
-            print("You entered the wrong command. Try again")
-    print("TODO app has been finished")
+            print("You entered the wrong command. Try again.")
+    print("TODO app has been finished.")
             
 
-            
 commands_list = {"add": add_task, "remove": remove_task, "mark": mark_task, "list": list_active_task, "statistic": list_statistic}
+
+help_string = """
+It is a simple TODO app with command line interface.
+
+This app supports the following commands:
+help - display this information;
+add <your_task> - add new task 'your_task'. You can enter multiple tasks 
+    separated by a comma;
+remove <task_id> - remove task with id 'task_id'. You can enter multiple
+    tasks id separated by a comma;
+list - display active tasks;
+mark <task_id> - mark task with id 'task_id' as done;
+statistic - display the number of comleted tasks grouped by date;
+exit - exit this app.
+"""
 
 
 if __name__ == "__main__":
