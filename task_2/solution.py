@@ -24,6 +24,11 @@ def create_table(con: sq.Connection) -> None:
     cur.execute(query)
 
 
-connection = create_connection(db=PATH_TO_DB)
-create_table(connection)
-close_connection(connection)
+def main():
+    connection = create_connection(db=PATH_TO_DB)
+    create_table(connection)
+    close_connection(connection)
+
+
+if __name__ == "__main__":
+    main()
