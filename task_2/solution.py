@@ -26,8 +26,12 @@ def create_table(con: sq.Connection) -> None:
 
 
 
-def add_task(con: sq.Connection, *tasks_name: tuple[str]):
-    pass
+def add_task(con: sq.Connection, *task_names: tuple[str]):
+    print("add_task", task_names)
+    flag = check_if_connection(con) and check_if_not_empty(task_names)
+    if flag:
+        print("good")
+    
 
 
 
@@ -41,6 +45,7 @@ def check_if_connection(connection: sq.Connection) -> bool:
 
 
 def check_if_not_empty(tpl: tuple[str]) -> bool:
+    print("check_if_not_empty")
     if len(tpl) == 0:
         raise ValueError("There is no data")
         return False
@@ -50,12 +55,13 @@ def check_if_not_empty(tpl: tuple[str]) -> bool:
 
 
 def main():
-    connection = create_connection(db=PATH_TO_DB)
+    con = create_connection(db=PATH_TO_DB)
 
-    result = check_if_not_empty( (1, 2, 3) )
-    print(result)
+    add_task(con, "task1", "task2")
+
+    add_task(con)
     
-    close_connection(connection)
+    close_connection(con)
 
 
 if __name__ == "__main__":
