@@ -7,19 +7,22 @@ PATH_TO_DB = "data.db"
 
 
 def create_connection(db: str) -> sq.Connection:
-    print("create_connection")
+    """This function creates connection with db and returns if"""
+
     con = sq.connect(db)
     return con
 
 
 def close_connection(con: sq.Connection) -> None:
-    print("close_connection")
+    """This function closes given connection with db"""
+    
     con.commit()
     con.close()
 
 
 def create_table(con: sq.Connection) -> None:
-    print("create_table")
+    """This function creates table into db"""
+    
     cur = con.cursor()
     query = """CREATE TABLE IF NOT EXISTS tasks(task_id INTEGER PRIMARY KEY,
                task_name VARCHAR(50), task_isactive VARCHAR(1), task_closing_date DATE)"""
@@ -31,7 +34,8 @@ def create_table(con: sq.Connection) -> None:
 
 
 def add_task(con: sq.Connection, *task_names: tuple[str]) -> None:
-    print("add_task", task_names)
+    """This function adds one of several tasks into db"""
+    
     flag = check_if_connection(con) and check_if_not_empty(task_names)
     if flag:
         cur = con.cursor()
@@ -41,7 +45,8 @@ def add_task(con: sq.Connection, *task_names: tuple[str]) -> None:
 
 
 def remove_task(con: sq.Connection, *task_ids: tuple[str]) -> None:
-    print("remove_task", task_ids)
+    """This function removes one of several tasks from db"""
+    
     flag = check_if_connection(con) and check_if_not_empty(task_ids) and check_if_all_tasks_exist(con, task_ids)
     if flag:
         cur = con.cursor()
@@ -51,7 +56,9 @@ def remove_task(con: sq.Connection, *task_ids: tuple[str]) -> None:
 
 
 def mark_task(con: sq.Connection, task_id: str) -> None:
-    print("mark_task")
+    """This function marks the task with given id as done into db and
+       sets current closing date for this task"""
+    
     flag = check_if_connection(con) and check_if_task_exist_and_isactive(con, task_id)
     if flag:
         cur = con.cursor()
@@ -61,7 +68,8 @@ def mark_task(con: sq.Connection, task_id: str) -> None:
 
 
 def list_active_task(con: sq.Connection) -> None:
-    print("list_active_task")
+    """This function show the active tasks if they exist"""
+        
     flag = check_if_connection(con)
     if flag:
         cur = con.cursor()
@@ -77,7 +85,8 @@ def list_active_task(con: sq.Connection) -> None:
 
 
 def list_statistic(con: sq.Connection) -> None:
-    print("list_statistic")
+    """This function show the statistic about completed tasks if they exist"""
+    
     flag = check_if_connection(con)
     if flag:
         cur = con.cursor()
@@ -94,7 +103,9 @@ def list_statistic(con: sq.Connection) -> None:
 
 
 def check_if_connection(con: sq.Connection) -> bool:
-    print("check_if_connection")
+    """This function checks if given argument if Connection object.
+       Returns True if it is or returns False and throws Exception otherwise"""
+
     if type(con) != sq.Connection:
         raise ValueError("The first argument of function must be Connection object")
         return False
@@ -102,7 +113,9 @@ def check_if_connection(con: sq.Connection) -> bool:
 
 
 def check_if_not_empty(tpl: tuple[str]) -> bool:
-    print("check_if_not_empty")
+    """This function checks if given tuple is empty.
+       Returns False and throws Exception if it is or returns True otherwise"""
+    
     if len(tpl) == 0:
         raise ValueError("Command didn't get any arguments")
         return False
@@ -110,7 +123,9 @@ def check_if_not_empty(tpl: tuple[str]) -> bool:
 
 
 def check_if_all_tasks_exist(con: sq.Connection, task_ids: tuple[str]) -> bool:
-    print("check_if_all_task_exist")
+    """This function checks if all the tasks with given ids exist.
+       Returns True if it is or returns False and throws Exception otherwise"""
+        
     cur = con.cursor()
     for task_id in task_ids:
         cur.execute("SELECT COUNT(task_name) FROM tasks WHERE task_id == ?", (task_id, ))
@@ -122,7 +137,9 @@ def check_if_all_tasks_exist(con: sq.Connection, task_ids: tuple[str]) -> bool:
 
 
 def check_if_task_exist_and_isactive(con: sq.Connection, task_id: str) -> bool:
-    print("check_if_task_exist_and_isactive", task_id)
+    """This function checks if the task with given id exists and it is active.
+       Returns True if it is or returns False and throws Exception otherwise"""
+        
     cur = con.cursor()
     cur.execute("SELECT COUNT(task_name) FROM tasks WHERE task_id == ? AND task_isactive == 1", (task_id, ))
     task_numbers = cur.fetchone()[0]
@@ -135,7 +152,10 @@ def check_if_task_exist_and_isactive(con: sq.Connection, task_id: str) -> bool:
 
 
 
-def main():
+def main() -> None:
+    """This function runs the main loop, reads and calls the necessary functions,
+       catches the exception and print text of caught exception"""
+    
     print("Hello! This is TODO app. Enter 'help' to get information about using this app.")
     while True:
         entered_data = input("Select command: ")
