@@ -72,7 +72,13 @@ def list_active_task(con: sq.Connection) -> None:
             print("Your active tasks:\nid  task")
             for task in cur:
                 print(str(task[0]).ljust(3), task[1])
-    
+
+
+def list_statistic(con: sq.Connection) -> None:
+    print("list_statistic")
+    flag = check_if_connection(con)
+    if flag:
+        pass
 
 
 
@@ -121,7 +127,7 @@ def check_if_task_exist_and_isactive(con: sq.Connection, task_id: str) -> bool:
 def main():
     con = create_connection(db=PATH_TO_DB)
 
-    list_active_task(con)
+    list_statistic(con)
     
     close_connection(con)
 
