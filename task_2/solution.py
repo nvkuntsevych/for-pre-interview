@@ -1,3 +1,4 @@
+import sys
 import sqlite3 as sq
 from datetime import date
 
@@ -23,6 +24,7 @@ def create_table(con: sq.Connection) -> None:
     query = """CREATE TABLE IF NOT EXISTS tasks(task_id INTEGER PRIMARY KEY,
                task_name VARCHAR(50), task_isactive VARCHAR(1), task_closing_date DATE)"""
     cur.execute(query)
+
 
 
 
@@ -137,22 +139,26 @@ def check_if_task_exist_and_isactive(con: sq.Connection, task_id: str) -> bool:
 
 
 def main():
-    while True:
+    print("Hello! This is TODO app")
+    while True:        
         command, *args_list = input("Select command: ").split(maxsplit=1)
         if args_list != []:
             args_list = [i.strip() for i in args_list[0].strip(",").split(",")]
 
         if command == "exit":
-            return
+            break
         elif command in commands_list:
-            print("ok")
+            try:
+                con = create_connection(db=PATH_TO_DB)
+                commands_list[command](con, *args_list)
+                close_connection(con)
+            except BaseException as exc:
+                print(exc, file=sys.stderr)
         else:
-            print("You entered the wrong command. Try again.")
+            print("You entered the wrong command. Try again")
+    print("TODO app has been finished")
             
-        
-    #con = create_connection(db=PATH_TO_DB)
-    
-    #close_connection(con)
+
             
 commands_list = {"add": add_task, "remove": remove_task, "mark": mark_task, "list": list_active_task, "statistic": list_statistic}
 
