@@ -141,10 +141,20 @@ def main():
         command, *args_list = input("Select command: ").split(maxsplit=1)
         if args_list != []:
             args_list = [i.strip() for i in args_list[0].strip(",").split(",")]
+
+        if command == "exit":
+            return
+        elif command in commands_list:
+            print("ok")
+        else:
+            print("You entered the wrong command. Try again.")
+            
         
     #con = create_connection(db=PATH_TO_DB)
     
     #close_connection(con)
+            
+commands_list = {"add": add_task, "remove": remove_task, "mark": mark_task, "list": list_active_task, "statistic": list_statistic}
 
 
 if __name__ == "__main__":
