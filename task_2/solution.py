@@ -84,7 +84,9 @@ def list_statistic(con: sq.Connection) -> None:
         if not_active_task_numbers == 0:
             print("There are not completed tasks")
         else:
-            print("There is some completed tasks")
+            cur.execute("SELECT task_closing_date, COUNT(task_name) FROM tasks WHERE task_isactive == 0 GROUP BY task_closing_date")
+            for task in cur:
+                print(f"{task[0]}: you've completed {task[1]} tasks!")
 
 
 
@@ -120,7 +122,7 @@ def check_if_all_tasks_exist(con: sq.Connection, task_ids: tuple[str]) -> bool:
 def check_if_task_exist_and_isactive(con: sq.Connection, task_id: str) -> bool:
     print("check_if_task_exist_and_isactive", task_id)
     cur = con.cursor()
-    cur.execute("SELECT COUNT(task_name) FROM tasks WHERE task_id == ? AND task_isactive == 1", (task_id))
+    cur.execute("SELECT COUNT(task_name) FROM tasks WHERE task_id == ? AND task_isactive == 1", (task_id, ))
     task_numbers = cur.fetchone()[0]
     if task_numbers == 0:
         raise ValueError(f"Task with {task_id} doesn't exist or this task is not active")
