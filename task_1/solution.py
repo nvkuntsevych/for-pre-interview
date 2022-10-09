@@ -1,5 +1,6 @@
 from csv import reader
 from itertools import groupby
+from json import dumps
 
 
 PATH_TO_FILE = "data.csv"
@@ -13,10 +14,7 @@ def group_by_country(file: str):
         for country, groups in groupby(lst, lambda row: row[0]):
             names = [group[1] for group in groups]
             groupped_result[country] = {"people": names, "count": len(names)}
-        return groupped_result
-
-        
-        
+        return dumps(groupped_result, indent=2)
 
 
 if __name__ == "__main__":
