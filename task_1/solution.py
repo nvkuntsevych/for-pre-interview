@@ -1,13 +1,14 @@
-import csv
+from csv import reader
+
 
 PATH_TO_FILE = "data.csv"
 
 
 def group_by_country(file: str):
     with open(file, "r") as f:
-        read_data = csv.reader(f)
-        for s in read_data:
-            print(s)
+        read_data = reader(f)
+        lst = tuple(reader(f))[1:]
+        print(lst)
         
         
 
