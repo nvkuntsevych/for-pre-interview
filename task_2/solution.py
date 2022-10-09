@@ -16,13 +16,13 @@ def close_connection(con: sq.Connection) -> None:
     con.close()
 
 
-def create_db(con: sq.Connection) -> None:
-    print("create_db")
+def create_table(con: sq.Connection) -> None:
+    print("create_table")
     cur = con.cursor()
     query = ""
     cur.execute(query)
 
 
 connection = create_connection(db=PATH_TO_DB)
-create_db(connection)
+create_table(connection)
 close_connection(connection)
