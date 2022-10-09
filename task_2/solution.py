@@ -1,4 +1,5 @@
 import sqlite3 as sq
+from datetime import date
 
 
 PATH_TO_DB = "data.db"
@@ -48,7 +49,12 @@ def remove_task(con: sq.Connection, *task_ids: tuple[str]) -> None:
 
 
 def mark_task(con: sq.Connection, task_id: str) -> None:
-    pass
+    flag = check_if_connection(con) and check_if_task_exist_and_isactive(con, task_id)
+    if flag:
+        cur = con.cursor()
+        query = "UPDATE tasks SET task_isactive = 0, task_closing_date = ? WHERE task_id == ?"
+        cur.execute(query, (date.today(), task_id))
+        print(f"The tasks with {task_id} id has been marked")
     
 
 
@@ -85,7 +91,7 @@ def check_if_all_tasks_exist(con: sq.Connection, task_ids: tuple[str]) -> bool:
 def check_if_task_exist_and_isactive(con: sq.Connection, task_id: str) -> bool:
     print("check_if_task_exist_and_isactive", task_id)
     cur = con.cursor()
-    cur.execute("SELECT COUNT(task_name) FROM tasks WHERE task_id == ? AND task_isactive == 1", (task_id, ))
+    cur.execute("SELECT COUNT(task_name) FROM tasks WHERE task_id == ? AND task_isactive == 1", (task_id))
     task_numbers = cur.fetchone()[0]
     if task_numbers == 0:
         raise ValueError(f"Task with {task_id} doesn't exist or this task is not active")
@@ -98,8 +104,7 @@ def check_if_task_exist_and_isactive(con: sq.Connection, task_id: str) -> bool:
 def main():
     con = create_connection(db=PATH_TO_DB)
 
-    result = check_if_task_exist_and_isactive(con, '10')
-    print("result", result)
+    mark_task(con, '4')
     
     close_connection(con)
 
