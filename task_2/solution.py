@@ -156,7 +156,7 @@ def main() -> None:
     """
     print("Hello! This is TODO app. Enter 'help' to get information about using this app.")
     while True:
-        entered_data = input("Select command: ")
+        entered_data = input("Insert command: ")
         if entered_data == "":
             continue
         
@@ -190,9 +190,9 @@ It is a simple TODO app with command line interface.
 
 This app supports the following commands:
 help - display this information;
-add <your_task> - add new task 'your_task'. You can enter multiple tasks 
+add <your_task> - add new task with description 'your_task'. You can enter multiple tasks 
     separated by a comma;
-remove <task_id> - remove task with id 'task_id'. You can enter multiple
+remove <task_id> - remove tasks with id 'task_id'. You can enter multiple
     task ids separated by a comma;
 list - display active tasks;
 mark <task_id> - mark task with id 'task_id' as done;
