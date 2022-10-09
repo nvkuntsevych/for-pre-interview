@@ -30,7 +30,11 @@ def add_task(con: sq.Connection, *task_names: tuple[str]):
     print("add_task", task_names)
     flag = check_if_connection(con) and check_if_not_empty(task_names)
     if flag:
-        print("good")
+        cur = con.cursor()
+        for task in task_names:
+            print(task)
+            #cur.execute()
+        print("The tasks have been added")
     
 
 
@@ -58,8 +62,6 @@ def main():
     con = create_connection(db=PATH_TO_DB)
 
     add_task(con, "task1", "task2")
-
-    add_task(con)
     
     close_connection(con)
 
