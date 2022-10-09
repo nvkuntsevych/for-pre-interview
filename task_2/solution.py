@@ -68,7 +68,10 @@ def list_active_task(con: sq.Connection) -> None:
         if active_task_numbers == 0:
             print("There are no active tasks")
         else:
-            print(f"There are {active_task_numbers} active tasks")
+            cur.execute("SELECT task_id, task_name FROM tasks WHERE task_isactive == 1")
+            print("Your active tasks:\nid  task")
+            for task in cur:
+                print(str(task[0]).ljust(3), task[1])
     
 
 
