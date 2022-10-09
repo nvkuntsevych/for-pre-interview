@@ -95,10 +95,10 @@ def list_statistic(con: sq.Connection) -> None:
 
 
 
-def check_if_connection(connection: sq.Connection) -> bool:
+def check_if_connection(con: sq.Connection) -> bool:
     print("check_if_connection")
-    if type(connection) != sq.Connection:
-        raise ValueError("The first value is not a Connection object")
+    if type(con) != sq.Connection:
+        raise ValueError("The first argument of function must be Connection object")
         return False
     return True
 
@@ -106,7 +106,7 @@ def check_if_connection(connection: sq.Connection) -> bool:
 def check_if_not_empty(tpl: tuple[str]) -> bool:
     print("check_if_not_empty")
     if len(tpl) == 0:
-        raise ValueError("There is no data")
+        raise ValueError("Command didn't get any arguments")
         return False
     return True
 
@@ -118,7 +118,7 @@ def check_if_all_tasks_exist(con: sq.Connection, task_ids: tuple[str]) -> bool:
         cur.execute("SELECT COUNT(task_name) FROM tasks WHERE task_id == ?", (task_id, ))
         task_numbers = cur.fetchone()[0]
         if task_numbers == 0:
-            raise ValueError("There is some wrong task_ids")
+            raise ValueError("Command got the wrong ids")
             return False
     return True
 
