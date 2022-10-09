@@ -28,9 +28,23 @@ def add_task(con: sq.Connection, *tasks_name: tuple[str]):
     pass
 
 
+def check_if_connection(connection):
+    print("check_if_connection")
+    if type(connection) != sq.Connection:
+        raise ValueError("The first value is not a Connection object")
+        return False
+    return True
+
+
 def main():
     connection = create_connection(db=PATH_TO_DB)
-    create_table(connection)
+    
+    result = check_if_connection(connection)
+    print(result)
+    
+    result = check_if_connection('abc')
+    print(result)
+    
     close_connection(connection)
 
 
