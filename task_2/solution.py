@@ -26,14 +26,14 @@ def create_table(con: sq.Connection) -> None:
 
 
 
-def add_task(con: sq.Connection, *task_names: tuple[str]):
+
+def add_task(con: sq.Connection, *task_names: tuple[str]) -> None:
     print("add_task", task_names)
     flag = check_if_connection(con) and check_if_not_empty(task_names)
     if flag:
         cur = con.cursor()
-        for task in task_names:
-            print(task)
-            #cur.execute()
+        for task_name in task_names:
+            cur.execute("INSERT INTO tasks (task_name, task_isactive)VALUES (?, 1)", (task_name, ))
         print("The tasks have been added")
     
 
@@ -54,6 +54,7 @@ def check_if_not_empty(tpl: tuple[str]) -> bool:
         raise ValueError("There is no data")
         return False
     return True
+
 
 
 
