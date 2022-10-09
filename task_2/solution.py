@@ -45,6 +45,10 @@ def remove_task(con: sq.Connection, *task_ids: tuple[str]) -> None:
         for task_id in task_ids:
             cur.execute("DELETE FROM tasks WHERE task_id == ?", (task_id, ))
         print("The tasks with", *task_ids, "ids have been removed")
+
+
+def mark_task(con: sq.Connection, task_id: str) -> None:
+    pass
     
 
 
@@ -76,8 +80,10 @@ def check_if_all_tasks_exist(con: sq.Connection, task_ids: tuple[str]) -> bool:
             raise ValueError("There is some wrong task_ids")
             return False
     return True
-        
 
+
+def check_if_task_exist_and_isactive(con: sq.Connection, task_id: str) -> bool:
+    pass
 
 
 
@@ -85,9 +91,9 @@ def check_if_all_tasks_exist(con: sq.Connection, task_ids: tuple[str]) -> bool:
 def main():
     con = create_connection(db=PATH_TO_DB)
 
-    #add_task(con, "task1", "task2", "task3", "task4", "task5", "task6")
-    #remove_task(con, 1, 2)
-    #remove_task(con, 8, 3)
+    result = check_if_task_exist_and_isactive(con, '10')
+    print("result", result)
+    
     close_connection(con)
 
 
