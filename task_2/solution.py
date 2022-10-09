@@ -24,6 +24,10 @@ def create_table(con: sq.Connection) -> None:
     cur.execute(query)
 
 
+def add_task(con: sq.Connection, *tasks_name: tuple[str]):
+    pass
+
+
 def main():
     connection = create_connection(db=PATH_TO_DB)
     create_table(connection)
