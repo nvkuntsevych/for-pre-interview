@@ -19,7 +19,8 @@ def close_connection(con: sq.Connection) -> None:
 def create_table(con: sq.Connection) -> None:
     print("create_table")
     cur = con.cursor()
-    query = ""
+    query = """CREATE TABLE IF NOT EXISTS tasks(task_id INTEGER PRIMARY KEY,
+               task_name VARCHAR(50), task_isactive VARCHAR(1), task_closing_date DATE)"""
     cur.execute(query)
 
 
