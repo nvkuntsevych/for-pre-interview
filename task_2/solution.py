@@ -49,12 +49,20 @@ def remove_task(con: sq.Connection, *task_ids: tuple[str]) -> None:
 
 
 def mark_task(con: sq.Connection, task_id: str) -> None:
+    print("mark_task")
     flag = check_if_connection(con) and check_if_task_exist_and_isactive(con, task_id)
     if flag:
         cur = con.cursor()
         query = "UPDATE tasks SET task_isactive = 0, task_closing_date = ? WHERE task_id == ?"
         cur.execute(query, (date.today(), task_id))
         print(f"The tasks with {task_id} id has been marked")
+
+
+def list_active_task(con: sq.Connection) -> None:
+    print("list_active_task")
+    flag = check_if_connection(con)
+    if flag:
+        pass
     
 
 
@@ -104,7 +112,7 @@ def check_if_task_exist_and_isactive(con: sq.Connection, task_id: str) -> bool:
 def main():
     con = create_connection(db=PATH_TO_DB)
 
-    mark_task(con, '4')
+    list_active_task(con)
     
     close_connection(con)
 
