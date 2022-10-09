@@ -35,6 +35,10 @@ def add_task(con: sq.Connection, *task_names: tuple[str]) -> None:
         for task_name in task_names:
             cur.execute("INSERT INTO tasks (task_name, task_isactive)VALUES (?, 1)", (task_name, ))
         print("The tasks have been added")
+
+
+def remove_task(con: sq.Connection, *task_ids: tuple[str]) -> None:
+    pass
     
 
 
