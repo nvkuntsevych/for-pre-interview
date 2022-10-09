@@ -10,7 +10,8 @@ def group_by_country(file: str):
         read_data = reader(f)
         lst = sorted(tuple(reader(f))[1:], reverse=True)
         for country, groups in groupby(lst, lambda row: row[0]):
-            print(country, groups)
+            names = [group[1] for group in groups]
+            print(country, names)
 
         
         
