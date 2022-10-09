@@ -60,8 +60,15 @@ def check_if_not_empty(tpl: tuple[str]) -> bool:
     return True
 
 
-def check_if_all_task_exist(con: sq.Connection, task_ids: tuple[str]) -> bool:
-    pass
+def check_if_all_tasks_exist(con: sq.Connection, *task_ids: tuple[str]) -> bool:
+    print("check_if_all_task_exist")
+    cur = con.cursor()
+    for task_id in task_ids:
+        cur.execute("SELECT COUNT(task_name) FROM tasks WHERE task_id == ?", (task_id, ))
+        task_numbers = cur.fetchone()[0]
+        print("task_id:", task_id)
+        print("task_numbers:", task_numbers)
+        
 
 
 
@@ -70,8 +77,9 @@ def check_if_all_task_exist(con: sq.Connection, task_ids: tuple[str]) -> bool:
 def main():
     con = create_connection(db=PATH_TO_DB)
 
-    add_task(con, "task1", "task2")
-    
+    #add_task(con, "task1", "task2", "task3", "task4", "task5", "task6")
+    check_if_all_tasks_exist(con, 1, 2)
+    check_if_all_tasks_exist(con, 8, 3)
     close_connection(con)
 
 
