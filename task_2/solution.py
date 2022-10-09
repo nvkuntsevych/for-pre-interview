@@ -41,7 +41,10 @@ def remove_task(con: sq.Connection, *task_ids: tuple[str]) -> None:
     print("remove_task", task_ids)
     flag = check_if_connection(con) and check_if_not_empty(task_ids) and check_if_all_tasks_exist(con, task_ids)
     if flag:
-        print("good")
+        cur = con.cursor()
+        for task_id in task_ids:
+            cur.execute("DELETE FROM tasks WHERE task_id == ?", (task_id, ))
+        print("The tasks with", *task_ids, "ids have been removed")
     
 
 
@@ -83,8 +86,8 @@ def main():
     con = create_connection(db=PATH_TO_DB)
 
     #add_task(con, "task1", "task2", "task3", "task4", "task5", "task6")
-    remove_task(con, 1, 2)
-    remove_task(con, 8, 3)
+    #remove_task(con, 1, 2)
+    #remove_task(con, 8, 3)
     close_connection(con)
 
 
