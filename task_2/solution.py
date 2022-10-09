@@ -91,6 +91,8 @@ def list_statistic(con: sq.Connection) -> None:
 
 
 
+
+
 def check_if_connection(connection: sq.Connection) -> bool:
     print("check_if_connection")
     if type(connection) != sq.Connection:
@@ -132,12 +134,17 @@ def check_if_task_exist_and_isactive(con: sq.Connection, task_id: str) -> bool:
 
 
 
-def main():
-    con = create_connection(db=PATH_TO_DB)
 
-    list_statistic(con)
+
+def main():
+    while True:
+        command, *args_list = input("Select command: ").split(maxsplit=1)
+        if args_list != []:
+            args_list = [i.strip() for i in args_list[0].strip(",").split(",")]
+        
+    #con = create_connection(db=PATH_TO_DB)
     
-    close_connection(con)
+    #close_connection(con)
 
 
 if __name__ == "__main__":
