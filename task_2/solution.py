@@ -62,7 +62,13 @@ def list_active_task(con: sq.Connection) -> None:
     print("list_active_task")
     flag = check_if_connection(con)
     if flag:
-        pass
+        cur = con.cursor()
+        cur.execute("SELECT COUNT(task_name) FROM tasks WHERE task_isactive == 1")
+        active_task_numbers = cur.fetchone()[0]
+        if active_task_numbers == 0:
+            print("There are no active tasks")
+        else:
+            print(f"There are {active_task_numbers} active tasks")
     
 
 
